@@ -119,8 +119,9 @@ export default function SendMoneyPage() {
                     }}
                     placeholder="0.00"
                     required
-                    min="1"
+                    min="0.01"
                     max="100000"
+                    step="0.01"
                     className="w-48 bg-none border-none text-slate-900 font-extrabold outline-none text-center placeholder-slate-200"
                   />
                 </div>
