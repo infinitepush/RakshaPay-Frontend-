@@ -37,32 +37,22 @@ const mockAlerts = [
 ];
 
 async function request(endpoint, options = {}) {
-  if (useMockFallback) {
-    return handleMockRequest(endpoint, options);
-  }
+  const token = localStorage.getItem('rakshapay_token');
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
+  };
 
-  try {
-    const token = localStorage.getItem('rakshapay_token');
-    const headers = {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    };
+  const res = await fetch(`${API_BASE}${endpoint}`, {
+    ...options,
+    headers,
+    signal: AbortSignal.timeout(60000) // 60 second timeout to allow backend cold starts
+  });
 
-    const res = await fetch(`${API_BASE}${endpoint}`, {
-      ...options,
-      headers,
-      signal: AbortSignal.timeout(60000) // 60 second timeout to allow backend cold starts
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw { status: res.status, ...data };
-    return data;
-  } catch (err) {
-    console.warn(`[API Connection Failed] Falling back to high-fidelity mock sandbox mode: ${err.message || 'Timeout'}`);
-    useMockFallback = true;
-    return handleMockRequest(endpoint, options);
-  }
+  const data = await res.json();
+  if (!res.ok) throw { status: res.status, ...data };
+  return data;
 }
 
 // ─── Mock Request Router ───
