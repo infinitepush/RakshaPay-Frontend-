@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Send, AlertTriangle, CheckCircle, XCircle, Loader2, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Send, AlertTriangle, CheckCircle, CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { transaction } from '../services/api';
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
